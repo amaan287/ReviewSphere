@@ -9,7 +9,7 @@ const keyLength = 32;
  * @param {string} password
  * @returns {string} The salt+hash
  */
-export const hash = async () => {
+export const hash = async (password, saltRounds) => {
     return new Promise((resolve, reject) => {
         // generate random 16 bytes long salt - recommended by NodeJS Docs
         const salt = randomBytes(16).toString("hex");
@@ -28,7 +28,7 @@ export const hash = async () => {
  * @param {string} hash The hash+salt to check against
  * @returns {boolean}
  */
-export const compare = async () => {
+export const compare = async (password, hash) => {
     return new Promise((resolve, reject) => {
         const [salt, hashKey] = hash.split(".");
         // we need to pass buffer values to timingSafeEqual
