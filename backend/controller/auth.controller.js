@@ -12,7 +12,7 @@ export const register = async (req, res, next) => {
         return next(handleError(400, "Please provide all fields"));
     }
     try {
-        const hashedPassword = await hash(password);
+        const hashedPassword = await hash(password, 10);
         const user = await prisma.user.create({
             data: {
                 name,

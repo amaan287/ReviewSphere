@@ -9,7 +9,7 @@ const keyLength = 32;
  * @param {string} password
  * @returns {string} The salt+hash
  */
-export const hash = async (password, saltRounds) => {
+export const hash = async (password, keyLength) => {
     return new Promise((resolve, reject) => {
         // generate random 16 bytes long salt - recommended by NodeJS Docs
         const salt = randomBytes(16).toString("hex");
