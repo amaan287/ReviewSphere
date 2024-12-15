@@ -1,3 +1,10 @@
+import { Button } from "@/components/ui/button";
+
 export default function HomePage() {
-  return <div>this is homepage</div>;
+  return (
+    <main className="">
+      <Button>buton</Button>
+      this is homepage
+    </main>
+  );
 }
