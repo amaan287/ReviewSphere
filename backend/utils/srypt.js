@@ -28,7 +28,7 @@ export const hash = async (password, keyLength) => {
  * @param {string} hash The hash+salt to check against
  * @returns {boolean}
  */
-export const compare = async (password, hash) => {
+export const compare = async (password, hash, keyLength) => {
     return new Promise((resolve, reject) => {
         const [salt, hashKey] = hash.split(".");
         // we need to pass buffer values to timingSafeEqual

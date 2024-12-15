@@ -13,4 +13,27 @@ model User {
   email       String   @unique
   password    String
   createdAt   DateTime @default(now())
+  Review Review[]
+}
+model Review {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  companyName   String
+  role          String
+  responsibilities String
+  feedback      String
+  reviewType    ReviewType  // Enum: GOOD, NOT_GOOD_NOT_BAD, BAD
+  rating        Int       @default(1) @db.Integer // 1 to 5 stars
+  hoursPerWeek  Int
+  salaryPerWeek Float
+  createdAt     DateTime  @default(now())
+  user          User      @relation(fields: [userId], references: [id])
+
+  @@map("reviews") // Map model to "reviews" table
+}
+
+enum ReviewType {
+  GOOD
+  NOT_GOOD_NOT_BAD
+  BAD
 }
