@@ -2,7 +2,7 @@ import { compare, hash } from '../utils/srypt.js';
 import jwt from "jsonwebtoken";
 import { handleError } from '../middleware/error.js';
 import { PrismaClient } from '@prisma/client';
-import { parse } from 'dotenv';
+
 
 
 const prisma = new PrismaClient();

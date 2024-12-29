@@ -10,6 +10,7 @@ const app = express();
 const prisma = new PrismaClient(); // Initialize Prisma Client
 dotenv.config(); // Load environment variables from .env file
 app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(express.json());
 app.use(bodyParser.json()); // Parse incoming request bodies in JSON format
 
 
