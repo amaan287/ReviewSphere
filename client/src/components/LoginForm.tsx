@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { loginFail, loginStart, loginSuccess } from "@/redux/user/userSlice";
+import { RootState } from "@/redux/store";
 interface SignupFormProps {
   name?: string;
   email?: string;
@@ -11,8 +13,10 @@ interface SignupFormProps {
 }
 export default function LoginForm() {
   const [formData, setFormData] = useState<SignupFormProps>({});
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, error: errorMessage } = useSelector(
+    (state: RootState) => state.user
+  );
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -23,12 +27,12 @@ export default function LoginForm() {
   ): Promise<void> => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill in all fields");
+      dispatch(loginFail("Please fill in all fields"));
+      return;
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(loginStart());
       const res = await axios.post("/api/v1/auth/login", {
         email: formData.email,
         password: formData.password,
@@ -36,15 +40,17 @@ export default function LoginForm() {
       const data = res.data;
       console.log(data);
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        dispatch(loginFail(data.message || "Login failed"));
+        return;
       }
-      setLoading(false);
       if (res.status === 200) {
+        dispatch(loginSuccess(data.data));
         navigate("/");
       }
     } catch (e) {
-      setLoading(false);
-      setErrorMessage((e as Error).message);
+      console.error(e);
+      dispatch(loginFail((e as Error).message));
+      return;
     }
   };
   return (
