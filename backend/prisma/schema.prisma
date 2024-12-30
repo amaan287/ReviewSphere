@@ -25,7 +25,7 @@ model Review {
   reviewType    ReviewType  // Enum: GOOD, NOT_GOOD_NOT_BAD, BAD
   rating        Int       @default(1) @db.Integer // 1 to 5 stars
   hoursPerWeek  Int
-  salaryPerWeek Float
+  salaryPerWeek String
   createdAt     DateTime  @default(now())
   user          User      @relation(fields: [userId], references: [id])
 

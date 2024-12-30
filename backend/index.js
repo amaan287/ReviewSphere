@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
 import authRouter from './routes/auth.route.js';
+import createReview from './routes/review.routes.js';
 
 // Initialize Express, Mongoose, Cors, Dotenv, and Body Parser
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.json()); // Parse incoming request bodies in JSON format
 const port = process.env.PORT;
 // initialising  Routes
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/review', createReview);
 
 // listening to the server
 try {
