@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 
 
 const prisma = new PrismaClient();
-export const register = async (req, res, next) => {
+export const signup = async (req, res, next) => {
 
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -29,7 +29,7 @@ export const register = async (req, res, next) => {
     }
 }
 
-export const signin = async (req, res, next) => {
+export const login = async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         return next(handleError(400, "Please provide all fields"));

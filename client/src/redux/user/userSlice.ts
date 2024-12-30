@@ -9,11 +9,13 @@ export interface UserState {
   currentUser: User | null;
   error: string | null;
   loading: boolean;
+  token: string | null;
 }
 const initialState: UserState = {
   currentUser: null,
   error: null,
   loading: false,
+  token: localStorage.getItem("access_token"),
 };
 
 const userSlice = createSlice({
@@ -28,6 +30,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.currentUser = action.payload;
+      state.token = localStorage.getItem("access_token");
     },
     loginFail: (state: UserState, action: PayloadAction<string>) => {
       state.loading = false;
@@ -46,16 +49,16 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    signoutStart: (state: UserState) => {
+    logoutStart: (state: UserState) => {
       state.error = null;
       state.loading = true;
     },
-    signoutSuccess: (state: UserState) => {
+    logoutSuccess: (state: UserState) => {
       state.currentUser = null;
       state.error = null;
       state.loading = false;
     },
-    signoutFail: (state: UserState, action: PayloadAction<string>) => {
+    logoutFail: (state: UserState, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.loading = false;
     },
@@ -72,9 +75,9 @@ export const {
   signupStart,
   signupSuccess,
   signupFail,
-  signoutStart,
-  signoutSuccess,
-  signoutFail,
+  logoutStart,
+  logoutSuccess,
+  logoutFail,
   clearError,
 } = userSlice.actions;
 export default userSlice.reducer;

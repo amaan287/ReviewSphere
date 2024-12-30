@@ -44,6 +44,7 @@ export default function LoginForm() {
         return;
       }
       if (res.status === 200) {
+        localStorage.setItem("access_token", data.access_token);
         dispatch(loginSuccess(data.data));
         navigate("/");
       }
