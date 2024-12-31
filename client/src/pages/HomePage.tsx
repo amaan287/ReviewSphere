@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
+import PostReviewForm from "@/components/PostReview";
 
 export default function HomePage() {
   return (
     <main className="">
-      <Button>buton</Button>
-      this is homepage
+      <PostReviewForm />
     </main>
   );
 }

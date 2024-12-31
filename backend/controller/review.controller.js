@@ -13,6 +13,7 @@ export const createReview = async (req, res, next) => {
         feedback,
         hoursPerWeek,
         salaryPerWeek,
+        location,
         user_id } = req.body;
     if (!rating || !reviewType || !companyName) {
         return next(handleError(400, "Please provide all fields"));
@@ -26,11 +27,10 @@ export const createReview = async (req, res, next) => {
                 companyName,
                 responsibilities,
                 feedback,
+                location,
                 hoursPerWeek,
                 salaryPerWeek,
-                user: {
-                    connect: { id: user_id }
-                }
+                userId: user_id
             }
         });
         res.status(200).json({ message: "Review created", data: reviewData });
@@ -77,6 +77,7 @@ export const updateReview = async (req, res, next) => {
         companyName,
         responsibilities,
         feedback,
+        location,
         hoursPerWeek,
         salaryPerWeek } = req.body;
     if (!rating || !reviewType || !companyName) {
@@ -94,6 +95,7 @@ export const updateReview = async (req, res, next) => {
                 companyName,
                 responsibilities,
                 feedback,
+                location,
                 hoursPerWeek,
                 salaryPerWeek
 

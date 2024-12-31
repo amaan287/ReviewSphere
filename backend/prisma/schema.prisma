@@ -21,6 +21,7 @@ model Review {
   companyName   String
   role          String
   responsibilities String
+  location      String
   feedback      String
   reviewType    ReviewType  // Enum: GOOD, NOT_GOOD_NOT_BAD, BAD
   rating        Int       @default(1) @db.Integer // 1 to 5 stars
