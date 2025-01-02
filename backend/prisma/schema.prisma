@@ -27,12 +27,26 @@ model Review {
   rating        Int       @default(1) @db.Integer // 1 to 5 stars
   hoursPerWeek  Int
   salaryPerWeek String
+  currency      Currency
   createdAt     DateTime  @default(now())
   user          User      @relation(fields: [userId], references: [id])
 
   @@map("reviews") // Map model to "reviews" table
+  
 }
 
+enum Currency {
+  INR
+  USD
+  EUR
+  GBP
+  AUD
+  CAD
+  SGD
+  AED
+  JPY
+  CNY
+}
 enum ReviewType {
   GOOD
   NOT_GOOD_NOT_BAD

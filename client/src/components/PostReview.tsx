@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import {
@@ -7,13 +8,86 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
+export interface FormData {
+  reviewType: string;
+  role: string;
+  companyName: string;
+  location: string;
+  responsibilities: string;
+  feedback: string;
+  rating: number;
+  hoursPerWeek: number;
+  salaryPerWeek: string;
+  currency: string;
+  user_id: string | null;
+}
 
 export default function PostReviewForm() {
+  const { currentUser } = useSelector((state: RootState) => state.user);
+  const [formData, setFormData] = useState<FormData>({
+    reviewType: "",
+    user_id: currentUser && currentUser.id,
+    rating: 0,
+    role: "",
+    companyName: "",
+    location: "",
+    responsibilities: "",
+    feedback: "",
+    hoursPerWeek: 0,
+    salaryPerWeek: "",
+    currency: "USD",
+  });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (
+      !formData.reviewType ||
+      !formData.role ||
+      !formData.companyName ||
+      !formData.location ||
+      !formData.responsibilities ||
+      !formData.feedback ||
+      !formData.hoursPerWeek ||
+      !formData.currency ||
+      !formData.salaryPerWeek
+    ) {
+      return alert("Please fill all the fields");
+    }
+    try {
+      const res = await axios.post("/api/v1/review/create", {
+        formData,
+      });
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
   return (
     <div>
-      <form action="submit">
+      <form
+        action="submit"
+        onSubmit={handleSubmit}
+        className="flex gap-2 flex-col"
+      >
         <Input
           className=""
+          onChange={handleChange}
+          placeholder="Rating from 1 to 5"
+          type="number"
+          name="rating"
+          id="rating"
+        />
+        <Input
+          className=""
+          onChange={handleChange}
           placeholder="Review Type"
           type="text"
           name="reviewType"
@@ -21,6 +95,7 @@ export default function PostReviewForm() {
         />
         <div className="flex gap-2">
           <Input
+            onChange={handleChange}
             className=""
             placeholder="Role"
             type="text"
@@ -29,6 +104,7 @@ export default function PostReviewForm() {
           />
           <Input
             className=""
+            onChange={handleChange}
             placeholder="Company Name"
             type="text"
             name="companyName"
@@ -37,6 +113,15 @@ export default function PostReviewForm() {
         </div>
         <Input
           className=""
+          placeholder="Employment Location"
+          onChange={handleChange}
+          type="text"
+          name="location"
+          id="location"
+        />
+        <Input
+          className=""
+          onChange={handleChange}
           placeholder="Responsibilities"
           type="text"
           name="responsibilities"
@@ -44,6 +129,7 @@ export default function PostReviewForm() {
         />
         <Input
           className=""
+          onChange={handleChange}
           placeholder="Feedback"
           type="text"
           name="feedback"
@@ -52,6 +138,7 @@ export default function PostReviewForm() {
         <div className="flex gap-2">
           <Input
             className="flex-1"
+            onChange={handleChange}
             placeholder="Hours Per Week"
             type="text"
             name="hoursPerWeek"
@@ -61,13 +148,19 @@ export default function PostReviewForm() {
             <Input
               className=""
               placeholder="Salary Per Week"
+              onChange={handleChange}
               type="number"
               min={1}
               max={999999}
               name="salaryPerWeek"
               id="salaryPerWeek"
             />
-            <Select>
+            <Select
+              onValueChange={(value) =>
+                setFormData({ ...formData, currency: value })
+              }
+              value={formData.currency} // Add this line
+            >
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>

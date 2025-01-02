@@ -14,6 +14,7 @@ export const createReview = async (req, res, next) => {
         hoursPerWeek,
         salaryPerWeek,
         location,
+        currency,
         user_id } = req.body;
     if (!rating || !reviewType || !companyName) {
         return next(handleError(400, "Please provide all fields"));
@@ -27,6 +28,7 @@ export const createReview = async (req, res, next) => {
                 companyName,
                 responsibilities,
                 feedback,
+                currency,
                 location,
                 hoursPerWeek,
                 salaryPerWeek,
@@ -71,15 +73,18 @@ export const getReviewById = async (req, res, next) => {
 
 export const updateReview = async (req, res, next) => {
     const id = req.params.id;
-    const { rating,
+    const {
+        rating,
         reviewType,
         role,
         companyName,
         responsibilities,
         feedback,
+        currency,
         location,
         hoursPerWeek,
-        salaryPerWeek } = req.body;
+        salaryPerWeek,
+    } = req.body;
     if (!rating || !reviewType || !companyName) {
         return next(handleError(400, "Please provide all fields"));
     }
@@ -95,9 +100,11 @@ export const updateReview = async (req, res, next) => {
                 companyName,
                 responsibilities,
                 feedback,
+                currency,
                 location,
                 hoursPerWeek,
-                salaryPerWeek
+                salaryPerWeek,
+
 
             }
         });
