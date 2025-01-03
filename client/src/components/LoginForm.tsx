@@ -33,24 +33,35 @@ export default function LoginForm() {
 
     try {
       dispatch(loginStart());
-      const res = await axios.post("/api/v1/auth/login", {
-        email: formData.email,
-        password: formData.password,
-      });
-      const data = res.data;
-      console.log(data);
-      if (data.success === false) {
-        dispatch(loginFail(data.message || "Login failed"));
+      const res = await axios.post(
+        "/api/v1/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
+      console.log(res.data);
+      if (res.data.success === false) {
+        dispatch(loginFail(res.data.message || "Login failed"));
         return;
       }
       if (res.status === 200) {
-        localStorage.setItem("access_token", data.access_token);
-        dispatch(loginSuccess(data.data));
+        localStorage.setItem("access_token", res.data.access_token);
+        dispatch(loginSuccess(res.data.data));
         navigate("/");
       }
     } catch (e) {
+      if (axios.isAxiosError(e)) {
+        dispatch(loginFail(e.response?.data.message || "Login failed"));
+        return;
+      }
       console.error(e);
-      dispatch(loginFail((e as Error).message));
+      dispatch(loginFail("An unexpected error occured"));
       return;
     }
   };

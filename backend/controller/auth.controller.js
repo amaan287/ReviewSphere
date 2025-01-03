@@ -52,10 +52,29 @@ export const login = async (req, res, next) => {
         });
 
         const { password: userPassword, ...userData } = user;
-        res.status(200).json({ message: "Signin successfull", data: userData, access_token: token });
+        res.cookie("access_token", token, {
+            httpOnly: true
+        });
+        return res.status(200).json({
+            success: true,
+            message: "Login successfull",
+            data: userData,
+            access_token: token
+        })
 
     } catch (error) {
         console.log("error signing in user: ", error);
         next(handleError(500, error));
     }
 }
+
+export const logout = async (req, res, next) => {
+    try {
+        res
+            .clearCookie("access_token")
+            .status(200)
+            .json("User has been signed out");
+    } catch (error) {
+        next(handleError(500, error));
+    }
+};

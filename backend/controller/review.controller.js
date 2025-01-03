@@ -16,13 +16,15 @@ export const createReview = async (req, res, next) => {
         location,
         currency,
         user_id } = req.body;
-    if (!rating || !reviewType || !companyName) {
+    if (!rating || !reviewType || !role || !companyName || !responsibilities ||
+        !feedback || !hoursPerWeek || !salaryPerWeek || !location || !currency) {
         return next(handleError(400, "Please provide all fields"));
     }
+
     try {
         const reviewData = await prisma.review.create({
             data: {
-                rating,
+                rating: Number(rating),
                 reviewType,
                 role,
                 companyName,
@@ -30,8 +32,8 @@ export const createReview = async (req, res, next) => {
                 feedback,
                 currency,
                 location,
-                hoursPerWeek,
-                salaryPerWeek,
+                hoursPerWeek: Number(hoursPerWeek),
+                salaryPerWeek: String(salaryPerWeek),
                 userId: user_id
             }
         });

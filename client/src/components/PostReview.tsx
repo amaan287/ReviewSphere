@@ -30,7 +30,7 @@ export default function PostReviewForm() {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState<FormData>({
     reviewType: "",
-    user_id: currentUser && currentUser.id,
+    user_id: currentUser?.id || null,
     rating: 0,
     role: "",
     companyName: "",
@@ -44,109 +44,133 @@ export default function PostReviewForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    // Convert rating and hoursPerWeek to numbers
+    const numericFormData = {
+      ...formData,
+      rating: Number(formData.rating),
+      hoursPerWeek: Number(formData.hoursPerWeek),
+    };
+
     if (
-      !formData.reviewType ||
-      !formData.role ||
-      !formData.companyName ||
-      !formData.location ||
-      !formData.responsibilities ||
-      !formData.feedback ||
-      !formData.hoursPerWeek ||
-      !formData.currency ||
-      !formData.salaryPerWeek
+      !numericFormData.reviewType ||
+      !numericFormData.role ||
+      !numericFormData.companyName ||
+      !numericFormData.location ||
+      !numericFormData.responsibilities ||
+      !numericFormData.feedback ||
+      !numericFormData.hoursPerWeek ||
+      !numericFormData.currency ||
+      !numericFormData.salaryPerWeek ||
+      !numericFormData.rating
     ) {
       return alert("Please fill all the fields");
     }
+
     try {
-      const res = await axios.post("/api/v1/review/create", {
-        formData,
-      });
+      const res = await axios.post("/api/v1/review/create", numericFormData);
       console.log(res);
+      // Add success handling here (e.g., show success message, redirect, clear form)
     } catch (err) {
       console.error(err);
+      alert("Error creating review. Please try again.");
     }
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+    const value =
+      e.target.type === "number"
+        ? parseFloat(e.target.value) || 0
+        : e.target.value.trim();
+
+    setFormData({ ...formData, [e.target.id]: value });
   };
+
   return (
     <div>
-      <form
-        action="submit"
-        onSubmit={handleSubmit}
-        className="flex gap-2 flex-col"
-      >
+      <form onSubmit={handleSubmit} className="flex gap-2 flex-col">
         <Input
-          className=""
           onChange={handleChange}
           placeholder="Rating from 1 to 5"
           type="number"
+          min={1}
+          max={5}
           name="rating"
           id="rating"
+          value={formData.rating || ""}
+          required
         />
         <Input
-          className=""
           onChange={handleChange}
           placeholder="Review Type"
           type="text"
           name="reviewType"
           id="reviewType"
+          value={formData.reviewType}
+          required
         />
         <div className="flex gap-2">
           <Input
             onChange={handleChange}
-            className=""
             placeholder="Role"
             type="text"
             name="role"
             id="role"
+            value={formData.role}
+            required
           />
           <Input
-            className=""
             onChange={handleChange}
             placeholder="Company Name"
             type="text"
             name="companyName"
             id="companyName"
+            value={formData.companyName}
+            required
           />
         </div>
         <Input
-          className=""
           placeholder="Employment Location"
           onChange={handleChange}
           type="text"
           name="location"
           id="location"
+          value={formData.location}
+          required
         />
         <Input
-          className=""
           onChange={handleChange}
           placeholder="Responsibilities"
           type="text"
           name="responsibilities"
           id="responsibilities"
+          value={formData.responsibilities}
+          required
         />
         <Input
-          className=""
           onChange={handleChange}
           placeholder="Feedback"
           type="text"
           name="feedback"
           id="feedback"
+          value={formData.feedback}
+          required
         />
         <div className="flex gap-2">
           <Input
             className="flex-1"
             onChange={handleChange}
             placeholder="Hours Per Week"
-            type="text"
+            type="number"
+            min={1}
+            max={168}
             name="hoursPerWeek"
             id="hoursPerWeek"
+            value={formData.hoursPerWeek || ""}
+            required
           />
           <div className="flex flex-1">
             <Input
-              className=""
               placeholder="Salary Per Week"
               onChange={handleChange}
               type="number"
@@ -154,12 +178,14 @@ export default function PostReviewForm() {
               max={999999}
               name="salaryPerWeek"
               id="salaryPerWeek"
+              value={formData.salaryPerWeek}
+              required
             />
             <Select
               onValueChange={(value) =>
                 setFormData({ ...formData, currency: value })
               }
-              value={formData.currency} // Add this line
+              value={formData.currency}
             >
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Currency" />

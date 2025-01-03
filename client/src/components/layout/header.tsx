@@ -1,9 +1,24 @@
 import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { logoutSuccess } from "@/redux/user/userSlice";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Header() {
   const { currentUser } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    try {
+      const res = await axios.post("/api/v1/auth/logout");
+      const { data } = res;
+      if (data.success) {
+        dispatch(logoutSuccess());
+        console.log(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <header className="top-0 z-50">
       <nav className="border max-w-screen  h-14 flex  justify-between px-4 py-2">
@@ -17,7 +32,11 @@ export default function Header() {
 
         <div>
           {currentUser ? (
-            <Link to="/profile" className="text-sm sm:text-lg font-semibold">
+            <Link
+              to={"/"}
+              onClick={handleLogout}
+              className="text-sm sm:text-lg font-semibold"
+            >
               {currentUser.name}
             </Link>
           ) : (
