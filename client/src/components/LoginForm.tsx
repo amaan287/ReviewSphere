@@ -5,14 +5,18 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { loginFail, loginStart, loginSuccess } from "@/redux/user/userSlice";
 import { RootState } from "@/redux/store";
-interface SignupFormProps {
+interface loginForm {
   name?: string;
   email?: string;
   password?: string;
   reenterPassword?: string;
 }
-export default function LoginForm() {
-  const [formData, setFormData] = useState<SignupFormProps>({});
+interface LoginFormProps {
+  className?: string;
+}
+
+export default function LoginForm({ className = "" }: LoginFormProps) {
+  const [formData, setFormData] = useState<loginForm>({});
   const { loading, error: errorMessage } = useSelector(
     (state: RootState) => state.user
   );
@@ -66,7 +70,7 @@ export default function LoginForm() {
     }
   };
   return (
-    <div>
+    <div className={className}>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>

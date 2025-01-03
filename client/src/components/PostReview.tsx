@@ -45,7 +45,6 @@ export default function PostReviewForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    // Convert rating and hoursPerWeek to numbers
     const numericFormData = {
       ...formData,
       rating: Number(formData.rating),
