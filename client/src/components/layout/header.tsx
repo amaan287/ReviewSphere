@@ -10,7 +10,8 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       const res = await axios.post("/api/v1/auth/logout");
-      const { data } = res;
+      const { data } = await res;
+
       if (data.success) {
         dispatch(logoutSuccess());
         console.log(data.message);

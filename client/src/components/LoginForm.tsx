@@ -56,6 +56,7 @@ export default function LoginForm({ className = "" }: LoginFormProps) {
       }
       if (res.status === 200) {
         localStorage.setItem("access_token", res.data.access_token);
+        console.log(res.data.access_token);
         dispatch(loginSuccess(res.data.data));
         navigate("/");
       }

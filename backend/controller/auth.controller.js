@@ -70,10 +70,10 @@ export const login = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
     try {
-        res
+        await res
             .clearCookie("access_token")
             .status(200)
-            .json("User has been signed out");
+            .json({ success: true, message: "User has been signed out" });
     } catch (error) {
         next(handleError(500, error));
     }
