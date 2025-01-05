@@ -3,7 +3,7 @@ import { Star, Clock, DollarSign, MapPin } from "lucide-react";
 
 interface ReviewData {
   reviewDataProps: {
-    id?: string;
+    id: string;
     companyName: string;
     role: string;
     responsibilities: string;
@@ -15,7 +15,7 @@ interface ReviewData {
     salaryPerWeek: string;
     currency: string;
     createdAt: string;
-    userId?: string;
+    userId: string;
   };
 }
 

@@ -3,7 +3,7 @@ import ReviewCard from "./ReviewCard";
 import { useEffect, useState } from "react";
 
 export interface ReviewDataTypes {
-  id?: string;
+  id: string;
   companyName: string;
   role: string;
   responsibilities: string;
@@ -15,7 +15,7 @@ export interface ReviewDataTypes {
   salaryPerWeek: string;
   currency: string;
   createdAt: string;
-  userId?: string;
+  userId: string;
 }
 
 export default function AllCards() {
@@ -25,18 +25,14 @@ export default function AllCards() {
     const res = await axios.get("/api/v1/review/getReviews");
     const { data } = res;
     setReviewData(data.data);
-    console.log(data.data);
   }
   useEffect(() => {
     getAllReviews();
   }, []);
-  useEffect(() => {
-    console.log("Updated review Data: ", reviewData);
-  }, [reviewData]);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-      {reviewData.map((review) => (
-        <ReviewCard reviewDataProps={review} />
+      {reviewData.map((review, index) => (
+        <ReviewCard key={index} reviewDataProps={review} />
       ))}
     </div>
   );

@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import Header from "./components/layout/header";
 import Signup from "./pages/SIgnupPage";
 import LoginPage from "./pages/LoginPage";
+import FooterDock from "./components/layout/footerDock";
 function App() {
   return (
     <>
@@ -13,6 +14,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
+        <FooterDock />
       </BrowserRouter>
     </>
   );

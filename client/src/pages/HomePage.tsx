@@ -4,7 +4,7 @@ import AllCards from "@/components/ReviewCard/AllCards";
 export default function HomePage() {
   return (
     <main className="">
-      <PostReviewForm />
+      {/* <PostReviewForm /> */}
       <AllCards />
     </main>
   );
