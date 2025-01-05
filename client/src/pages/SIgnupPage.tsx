@@ -2,8 +2,7 @@ import SignupForm from "@/components/SignupForm";
 
 export default function Signup() {
   return (
-    <div>
-      <h1>Signup</h1>
+    <div className="pt-8">
       <SignupForm />
     </div>
   );

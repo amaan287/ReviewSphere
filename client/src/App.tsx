@@ -3,20 +3,19 @@ import HomePage from "./pages/HomePage";
 import Header from "./components/layout/header";
 import Signup from "./pages/SIgnupPage";
 import LoginPage from "./pages/LoginPage";
-import FooterDock from "./components/layout/footerDock";
+
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-        <FooterDock />
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+
+      {/* <FooterDock /> */}
+    </BrowserRouter>
   );
 }
 
