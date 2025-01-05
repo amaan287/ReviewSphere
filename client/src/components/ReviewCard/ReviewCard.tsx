@@ -1,35 +1,39 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, Clock, DollarSign, MapPin } from "lucide-react";
+
 interface ReviewData {
-  data: Data;
-}
-interface Data {
-  companyName: string;
-  role: string;
-  responsibilities: string;
-  location: string;
-  feedback: string;
-  reviewType: "NOT_GOOD_NOT_BAD" | string;
-  rating: number;
-  hoursPerWeek: number;
-  salaryPerWeek: string;
-  currency: string;
-  createdAt: string;
+  reviewDataProps: {
+    id?: string;
+    companyName: string;
+    role: string;
+    responsibilities: string;
+    location: string;
+    feedback: string;
+    reviewType: string;
+    rating: number;
+    hoursPerWeek: number;
+    salaryPerWeek: string;
+    currency: string;
+    createdAt: string;
+    userId?: string;
+  };
 }
 
-export default function ReviewCard({ reviewData }: ReviewData) {
-  const review: Data = {
-    companyName: "Google",
-    role: "software engineer nadiadi",
-    responsibilities: "To lead the team",
-    location: "Kota",
-    feedback: "try to master the basics before coming to work here",
-    reviewType: "NOT_GOOD_NOT_BAD",
-    rating: 4,
-    hoursPerWeek: 72,
-    salaryPerWeek: "5000 INR",
-    currency: "INR",
-    createdAt: "2025-01-02T12:41:19.905Z",
+export default function ReviewCard({ reviewDataProps }: ReviewData) {
+  const review = {
+    id: reviewDataProps.id,
+    companyName: reviewDataProps.companyName,
+    role: reviewDataProps.role,
+    responsibilities: reviewDataProps.responsibilities,
+    location: reviewDataProps.location,
+    feedback: reviewDataProps.feedback,
+    reviewType: reviewDataProps.reviewType,
+    rating: reviewDataProps.rating,
+    hoursPerWeek: reviewDataProps.hoursPerWeek,
+    salaryPerWeek: reviewDataProps.salaryPerWeek,
+    currency: reviewDataProps.currency,
+    createdAt: reviewDataProps.createdAt,
+    userId: reviewDataProps.userId,
   };
 
   const formatDate = (dateString: string) => {
