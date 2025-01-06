@@ -6,16 +6,18 @@ import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
+    <div className="scroll-smooth">
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
 
-      {/* <FooterDock /> */}
-    </BrowserRouter>
+        {/* <FooterDock /> */}
+      </BrowserRouter>
+    </div>
   );
 }
 
