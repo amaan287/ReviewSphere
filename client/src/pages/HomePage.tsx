@@ -1,5 +1,4 @@
 import ScrollHidingDialog from "@/components/HidingDialog";
-import PostReviewForm from "@/components/PostReview";
 import AllCards from "@/components/ReviewCard/AllCards";
 
 export default function HomePage() {
@@ -8,7 +7,7 @@ export default function HomePage() {
       <div className="max-w-[1600px] mx-auto">
         <AllCards />
       </div>
-      <ScrollHidingDialog children={<PostReviewForm />} />
+      <ScrollHidingDialog />
     </div>
   );
 }

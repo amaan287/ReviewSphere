@@ -1,8 +1,8 @@
-import { useState, useEffect, ReactNode } from "react";
+import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
 
-const ScrollHidingDialog = ({ children }: { children: ReactNode }) => {
+const ScrollHidingDialog = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -28,12 +28,11 @@ const ScrollHidingDialog = ({ children }: { children: ReactNode }) => {
         isVisible ? "translate-y-0" : "translate-y-[200%]"
       }`}
     >
-      <Dialog>
-        <DialogTrigger className="bg-white p-2 shadow-lg hover:shadow-xl rounded-full border-2">
+      <div className="bg-white p-2 shadow-lg hover:shadow-xl rounded-full border-2">
+        <Link to={"/create"}>
           <Plus size={30} />
-        </DialogTrigger>
-        <DialogContent>{children}</DialogContent>
-      </Dialog>
+        </Link>
+      </div>
     </div>
   );
 };

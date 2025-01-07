@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, Clock, DollarSign, MapPin, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface ReviewData {
   reviewDataProps: {
@@ -56,69 +57,71 @@ export default function ReviewCard({ reviewDataProps }: ReviewData) {
 
   return (
     <Card className="w-full hover:shadow-lg transition-shadow duration-200">
-      <CardHeader className="space-y-3">
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1">
-            <CardTitle className="text-xl font-bold line-clamp-1">
-              {review.companyName}
-            </CardTitle>
-            <div className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-gray-500" />
-              <span className="text-md font-medium text-gray-700 line-clamp-1">
-                {review.role}
+      <Link to={`/review/${review.id}`}>
+        <CardHeader className="space-y-3">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <CardTitle className="text-xl font-bold line-clamp-1">
+                {review.companyName}
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-gray-500" />
+                <span className="text-md font-medium text-gray-700 line-clamp-1">
+                  {review.role}
+                </span>
+              </div>
+            </div>
+            <div className="flex gap-1 shrink-0">
+              {renderStars(review.rating)}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 text-sm">
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <MapPin className="w-4 h-4" />
+              <span className="line-clamp-1">{review.location}</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <Clock className="w-4 h-4" />
+              <span>{review.hoursPerWeek}h/week</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-gray-600">
+              <DollarSign className="w-4 h-4" />
+              <span>
+                {review.currency} {review.salaryPerWeek}/week
               </span>
             </div>
           </div>
-          <div className="flex gap-1 shrink-0">
-            {renderStars(review.rating)}
-          </div>
-        </div>
+        </CardHeader>
 
-        <div className="flex flex-wrap gap-3 text-sm">
-          <div className="flex items-center gap-1.5 text-gray-600">
-            <MapPin className="w-4 h-4" />
-            <span className="line-clamp-1">{review.location}</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 text-gray-600">
-            <Clock className="w-4 h-4" />
-            <span>{review.hoursPerWeek}h/week</span>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-900">Responsibilities</h3>
+            <p className="text-gray-700 line-clamp-3">
+              {review.responsibilities}
+            </p>
           </div>
 
-          <div className="flex items-center gap-1.5 text-gray-600">
-            <DollarSign className="w-4 h-4" />
-            <span>
-              {review.currency} {review.salaryPerWeek}/week
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-900">Feedback</h3>
+            <p className="text-gray-700 line-clamp-3">{review.feedback}</p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 text-sm">
+            <Badge
+              variant="secondary"
+              className={`${getReviewTypeColor(review.reviewType)}`}
+            >
+              {review.reviewType.replace(/_/g, " ")}
+            </Badge>
+            <span className="text-gray-500 text-sm">
+              {formatDate(review.createdAt)}
             </span>
           </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <h3 className="font-semibold text-gray-900">Responsibilities</h3>
-          <p className="text-gray-700 line-clamp-3">
-            {review.responsibilities}
-          </p>
-        </div>
-
-        <div className="space-y-2">
-          <h3 className="font-semibold text-gray-900">Feedback</h3>
-          <p className="text-gray-700 line-clamp-3">{review.feedback}</p>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-3 text-sm">
-          <Badge
-            variant="secondary"
-            className={`${getReviewTypeColor(review.reviewType)}`}
-          >
-            {review.reviewType.replace(/_/g, " ")}
-          </Badge>
-          <span className="text-gray-500 text-sm">
-            {formatDate(review.createdAt)}
-          </span>
-        </div>
-      </CardContent>
+        </CardContent>
+      </Link>
     </Card>
   );
 }

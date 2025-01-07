@@ -55,13 +55,27 @@ export const getReviews = async (req, res, next) => {
         next(handleError(500, error));
     }
 }
+export const getReviewsByUserId = async (req, res, next) => {
+    const userId = req.params.id;
+    try {
+        const reviews = await prisma.review.findMany({
+            where: {
+                userId: userId
+            }
+        });
+        res.status(200).json({ message: "All reviews", data: reviews });
 
+    } catch (error) {
+        console.log("error getting reviews: ", error);
+        next(handleError(500, error));
+    }
+}
 export const getReviewById = async (req, res, next) => {
     const id = req.params.id;
     try {
         const review = await prisma.review.findUnique({
             where: {
-                id: parseInt(id)
+                id: String(id)
             }
         });
         res.status(200).json({ message: "Review", data: review });
