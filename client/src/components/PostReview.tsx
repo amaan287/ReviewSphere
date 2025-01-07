@@ -21,6 +21,7 @@ import {
   CardContent,
   CardFooter,
 } from "./ui/card";
+import { useNavigate } from "react-router-dom";
 
 export interface FormData {
   reviewType: string;
@@ -37,6 +38,7 @@ export interface FormData {
 }
 
 export default function PostReviewForm() {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState<FormData>({
     reviewType: "",
@@ -54,6 +56,7 @@ export default function PostReviewForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    console.log("button clicked");
 
     const numericFormData = {
       ...formData,
@@ -73,16 +76,21 @@ export default function PostReviewForm() {
       !numericFormData.salaryPerWeek ||
       !numericFormData.rating
     ) {
+      console.log(numericFormData);
       return alert("Please fill all the fields");
     }
 
     try {
       const res = await axios.post("/api/v1/review/create", numericFormData);
-      console.log(res);
+
+      if (res.status === 200) {
+        return navigate("/");
+      }
+
       // Add success handling here (e.g., show success message, redirect, clear form)
     } catch (err) {
       console.error(err);
-      alert("Error creating review. Please try again.");
+      return alert("Error creating review. Please try again.");
     }
   }
 
@@ -90,7 +98,7 @@ export default function PostReviewForm() {
     const value =
       e.target.type === "number"
         ? parseFloat(e.target.value) || 0
-        : e.target.value.trim();
+        : e.target.value;
 
     setFormData({ ...formData, [e.target.id]: value });
   };
@@ -104,7 +112,7 @@ export default function PostReviewForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6">
           <div className="grid grid-cols-2 gap-8">
             <div>
               <Label
@@ -266,7 +274,12 @@ export default function PostReviewForm() {
         </form>
       </CardContent>
       <CardFooter>
-        <Button type="submit" className="w-full">
+        <Button
+          onClick={(e) =>
+            handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>)
+          }
+          className="w-full"
+        >
           Submit Review
         </Button>
       </CardFooter>

@@ -2,36 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, Clock, DollarSign, MapPin, Briefcase } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { ReviewDataTypes } from "@/types/review.ts";
+import { formatDate } from "../../utils/dateFormatter";
 
 interface ReviewData {
-  reviewDataProps: {
-    id: string;
-    companyName: string;
-    role: string;
-    responsibilities: string;
-    location: string;
-    feedback: string;
-    reviewType: string;
-    rating: number;
-    hoursPerWeek: number;
-    salaryPerWeek: string;
-    currency: string;
-    createdAt: string;
-    userId: string;
-  };
+  reviewDataProps: ReviewDataTypes;
 }
 
 export default function ReviewCard({ reviewDataProps }: ReviewData) {
   const review = reviewDataProps;
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   const renderStars = (rating: number) => {
     return Array(5)
       .fill(0)
@@ -106,7 +85,9 @@ export default function ReviewCard({ reviewDataProps }: ReviewData) {
 
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-900">Feedback</h3>
-            <p className="text-gray-700 line-clamp-3">{review.feedback}</p>
+            <p className="text-gray-700 line-clamp-3">
+              {review.feedback.slice(0, 50)}...
+            </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 pt-3 text-sm">

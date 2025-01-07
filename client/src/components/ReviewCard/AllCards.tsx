@@ -1,24 +1,8 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import ReviewCard from "./ReviewCard";
-
-export interface ReviewDataTypes {
-  id: string;
-  companyName: string;
-  role: string;
-  responsibilities: string;
-  location: string;
-  feedback: string;
-  reviewType: "NOT_GOOD_NOT_BAD" | string;
-  rating: number;
-  hoursPerWeek: number;
-  salaryPerWeek: string;
-  currency: string;
-  createdAt: string;
-  userId: string;
-}
+import { useAllReviews } from "@/hooks/useAllReviews";
+import { ErrorState } from "../Profile/ErrorState";
 
 const SkeletonCard = () => (
   <Card className="p-4 space-y-4">
@@ -33,27 +17,7 @@ const SkeletonCard = () => (
 );
 
 export default function AllCards() {
-  const [reviewData, setReviewData] = useState<ReviewDataTypes[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  async function getAllReviews() {
-    try {
-      setIsLoading(true);
-      const res = await axios.get("/api/v1/review/getReviews");
-      setReviewData(res.data.data);
-      setError(null);
-    } catch (err) {
-      setError("Failed to load reviews. Please try again later.");
-      console.error("Error fetching reviews:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getAllReviews();
-  }, []);
+  const { reviewData, isLoading, error, getAllReviews } = useAllReviews();
 
   // Show loading skeletons
   if (isLoading) {
@@ -68,17 +32,7 @@ export default function AllCards() {
 
   // Show error state
   if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center p-8">
-        <div className="text-red-500 text-center mb-4">{error}</div>
-        <button
-          onClick={() => getAllReviews()}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
-        >
-          Try Again
-        </button>
-      </div>
-    );
+    return ErrorState({ error, retry: getAllReviews });
   }
 
   // Show empty state

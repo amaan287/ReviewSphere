@@ -31,7 +31,7 @@ export default function FooterDock() {
   return (
     <div
       className={`fixed shadow-lg rounded-b-lg top-0 right-0 left-0 bg-white border-t border-gray-200 px-2 py-3 z-50 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "translate-y-[200%]"
+        isVisible ? "translate-y-0" : "translate-y-[-200%]"
       }`}
     >
       <nav className="w-screen">

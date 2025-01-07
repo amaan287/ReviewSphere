@@ -1,26 +1,22 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Header from "./components/layout/header";
-import Signup from "./pages/SIgnupPage";
-import LoginPage from "./pages/LoginPage";
-import ReviewPage from "./pages/ReviewPage";
-import ProfilePage from "./pages/ProfilePage";
-import Create from "./pages/CreateReview";
+import { Suspense } from "react";
+import { BrowserRouter, useRoutes } from "react-router-dom";
+import Header from "@/components/layout/header";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+import { routes } from "./routes/routes";
+
+function AppRoutes() {
+  const element = useRoutes(routes);
+  return element;
+}
 
 function App() {
   return (
     <div className="scroll-smooth">
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/review/:id" element={<ReviewPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/create" element={<Create />} />
-        </Routes>
-
+        <Suspense fallback={<LoadingSpinner />}>
+          <AppRoutes />
+        </Suspense>
         {/* <FooterDock /> */}
       </BrowserRouter>
     </div>
