@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,30 +24,29 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-
-interface ReviewData {
-  id: string;
-  companyName: string;
-  role: string;
-  responsibilities: string;
-  location: string;
-  feedback: string;
-  reviewType: string;
-  rating: number;
-  hoursPerWeek: number;
-  salaryPerWeek: string;
-  currency: string;
-  createdAt: string;
-  userId: string;
-}
+import { ReviewDataTypes } from "@/types/review";
+import { formatDate } from "@/utils/dateFormatter";
 
 export default function ReviewPage() {
-  const [reviewData, setReviewData] = useState<ReviewData | null>(null);
+  const [reviewData, setReviewData] = useState<ReviewDataTypes | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { id } = useParams<{ id: string }>();
   const { currentUser } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const fullUrl = window.location.origin + location.pathname;
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(fullUrl);
+      alert("URL copied to clipboard!"); // Optional: give user feedback
+    } catch (err) {
+      console.error("Failed to copy URL: ", err);
+    }
+  };
+
   const onDelete = () => {
     try {
       const res = axios.delete(`/api/v1/review/deleteReview/${id}`);
@@ -80,14 +79,6 @@ export default function ReviewPage() {
       fetchReviewData();
     }
   }, [id]);
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
 
   const renderStars = (rating: number) => {
     return Array(5)
@@ -164,7 +155,7 @@ export default function ReviewPage() {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Options</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={copyToClipboard}>
                       <Share2 /> Share
                     </DropdownMenuItem>
                     {currentUser?.id == reviewData.userId && currentUser ? (
@@ -201,7 +192,7 @@ export default function ReviewPage() {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Options</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={copyToClipboard}>
                     <Share2 /> Share
                   </DropdownMenuItem>
                   {currentUser?.id == reviewData.userId && currentUser ? (
