@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import { PrismaClient } from '@prisma/client';
 import authRouter from './routes/auth.route.js';
 import createReview from './routes/review.routes.js';
-
+import path from 'path';
 // Initialize Express, Mongoose, Cors, Dotenv, and Body Parser
 const app = express();
 const prisma = new PrismaClient(); // Initialize Prisma Client
@@ -13,6 +13,7 @@ dotenv.config(); // Load environment variables from .env file
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json());
 app.use(bodyParser.json()); // Parse incoming request bodies in JSON format
+const __dirname = path.resolve();
 
 
 // app.use("/", (req, res) => { res.send("Hello World"); }); // Define a simple route for the root URL
@@ -22,6 +23,12 @@ const port = process.env.PORT;
 // initialising  Routes
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/review', createReview);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 // listening to the server
 try {
