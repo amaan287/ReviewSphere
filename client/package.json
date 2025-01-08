@@ -27,6 +27,7 @@
     "react-router-dom": "^7.0.2",
     "redux-persist": "^6.0.0",
     "redux-toolkit": "^1.1.2",
+    "review-sphere": "file:..",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2"
