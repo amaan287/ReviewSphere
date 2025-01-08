@@ -18,7 +18,7 @@ interface SignupFormProps {
   reenterPassword?: string;
 }
 
-export default function SignupForm() {
+export default function SignupForm(): JSX.Element {
   const [formData, setFormData] = useState<SignupFormProps>({});
   const dispatch = useDispatch();
   const { loading, error: errorMessage } = useSelector(
