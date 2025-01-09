@@ -164,7 +164,7 @@ export default function ReviewPage() {
                           <UploadCloud /> Update
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="text-red-500"
+                          className="text-red-500 hover:text-gray-100 hover:bg-red-500 "
                           onClick={onDelete}
                         >
                           <Trash /> Delete
@@ -202,7 +202,7 @@ export default function ReviewPage() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={onDelete}
-                        className="text-red-500"
+                        className="text-red-500 hover:text-gray-100 hover:bg-red-500 "
                       >
                         <Trash /> Delete
                       </DropdownMenuItem>
